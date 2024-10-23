@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import {ActivityIndicator, Image, Pressable, StyleSheet, View} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {AccessLevel} from "@/core/enums/access-level";
 import Dropdown from "@/components/dropdown";
 import MenuItem from "@/components/menu-item";
 import Icon from "@/components/icon";

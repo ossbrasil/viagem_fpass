@@ -6,9 +6,8 @@ export interface CreateRideDto {
     status?: RideStatuses;
     employeeId: number;
     category: string;
-    driver?: Driver;
+    employee?: Driver;
     addresses: Address[];
-    description: string;
     polyline: string[];
     distance: number;
     ownerId: number;

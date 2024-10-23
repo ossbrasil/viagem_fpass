@@ -51,7 +51,7 @@ const styles = (props: { type: ButtonType, size: 'sm' | 'md' | 'lg', disabled: b
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'center',
-        height: {'sm': 20, 'md': 40, 'lg': 60}[props.size],
+        maxHeight: {'sm': 20, 'md': 40, 'lg': 60}[props.size],
         borderRadius: {'sm': 4, 'md': 6, 'lg': 10}[props.size],
         backgroundColor: props.disabled ? '#999' : props.type,
         marginHorizontal: 4

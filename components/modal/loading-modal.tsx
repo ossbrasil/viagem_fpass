@@ -10,7 +10,7 @@ const LoadingModal: FC<LoadingModalProps> = ({text}) => {
     return (
         <View style={[styles.container, globalStyles.shadowProps]}>
             <Text style={styles.content}>{text}</Text>
-            <ActivityIndicator size={"large"} color="#972620"/>
+            <ActivityIndicator size={"large"} color="#000"/>
         </View>
     );
 };
