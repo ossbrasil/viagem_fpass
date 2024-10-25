@@ -120,7 +120,7 @@ export const RideProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                         else sRides.push(ride);
                         if (session?.user.accessLevel === AccessLevel.DRIVER
                             && [RideStatuses.IN_PROGRESS, RideStatuses.DRIVER_EN_ROUTE, RideStatuses.DRIVER_EN_ROUTE].includes(ride.status!))
-                            navigate('current-ride', {id: ride.id})
+                            navigate('current-ride')
                         return [sRides, hRides]
                     }, [[], []],
                 );

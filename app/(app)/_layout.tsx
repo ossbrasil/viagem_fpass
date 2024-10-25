@@ -1,7 +1,7 @@
 import {useApp} from "@/core/context/app-context";
 import {Redirect, Tabs} from "expo-router";
 import React, {useState} from "react";
-import {ActivityIndicator, Image, Pressable, StyleSheet, View} from "react-native";
+import {ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, View} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Dropdown from "@/components/dropdown";
@@ -10,6 +10,7 @@ import Icon from "@/components/icon";
 import {RideProvider} from "@/components/ride/ride-ctx";
 import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 import {SocketIoProvider} from "@/core/context/socketio-context";
+import {ShiftProvider} from "@/core/context/shift-context";
 
 export type RootStackParamList = {
     'new-ride': { id?: number };
@@ -47,7 +48,9 @@ export const AppLayout = () => {
         );
     if (!session) return <Redirect href={'/sign-in'}/>;
     return (
-        <View style={{flex: 1, paddingTop: top}}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{flex: 1, paddingTop: top}}>
             <View style={{
                 height: 80,
                 backgroundColor: "#000",
@@ -72,7 +75,7 @@ export const AppLayout = () => {
                 <Dropdown items={menuItems}/>
             )}
             <SocketIoProvider>
-                <RideProvider>
+                <ShiftProvider>
                     <Tabs
                         screenOptions={{
                             headerShown: false,
@@ -112,15 +115,15 @@ export const AppLayout = () => {
                             }}
                         />
                     </Tabs>
-                </RideProvider>
+                </ShiftProvider>
             </SocketIoProvider>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 const styles = StyleSheet.create({
     image: {
         width: 100,
-        left:0,
+        left: 0,
     },
 });
 

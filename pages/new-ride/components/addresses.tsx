@@ -17,7 +17,7 @@ const Addresses = () => {
     const [showAddAddress, setShowAddAddress] = useState(false);
     const [selectedIdx, setSelectedIdx] = useState<number>();
     useEffect(() => {
-        if(!showAddAddress){
+        if (!showAddAddress) {
             setSelectedIdx(undefined);
         }
     }, [showAddAddress]);
@@ -81,15 +81,12 @@ const Addresses = () => {
                     </View>
                 )}
             </GestureHandlerRootView>
-            <View style={{flexDirection: 'row'}}>
-                <CustomButton
-                    title={"Adicionar Endereço"}
-                    type={ButtonType.MAIN}
-                    size={'md'}
-                    onPress={() => {setShowAddAddress(true)}}
-                />
-            </View>
-
+            <CustomButton
+                title={"Adicionar Endereço"}
+                type={ButtonType.MAIN}
+                size={'md'}
+                onPress={() => {setShowAddAddress(true)}}
+            />
             {errors.addresses && (
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
                     <Text>

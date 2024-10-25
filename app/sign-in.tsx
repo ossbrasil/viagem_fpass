@@ -89,7 +89,7 @@ export default function SignIn() {
                 suffixIcon={<Icon name={!showPassword ? "eye-outline" : "eye-off-outline"}
                                   onPress={togglePasswordVisibility}/>}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', height: 60}}>
                 <CustomButton
                     title={'Entrar'}
                     type={ButtonType.MAIN}

@@ -50,15 +50,13 @@ const RideScrollView = () => {
                     </Picker>
                 </View>
             </View>
-            <View style={{alignSelf: 'flex-end', flexDirection: 'row', paddingVertical: 5}}>
                 <CustomButton
                     title={Object(values).hasOwnProperty('id') ? "Atualizar Viagem" : "Agendar Viagem"}
                     type={ButtonType.MAIN}
-                    size={"md"}
+                    size="md"
                     onPress={handleSubmit}
                     disabled={(values.addresses !== undefined ? values.addresses.length < 2 : false) || values.employeeId === undefined}
                 />
-            </View>
         </Fragment>
     );
 };

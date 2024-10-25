@@ -23,8 +23,7 @@ const CardContent: FC<ContentProps> = ({ride}) => {
     const {navigate} = useNavigation<NavigationProp>();
     const setActionButtons = () => {
         let buttons: ButtonProps[] = [];
-        if (session?.user.accessLevel !== AccessLevel.ADMIN) {
-            switch (ride.status) {
+        switch (ride.status) {
                 case RideStatuses.SCHEDULED:
                     buttons.push(
                         {
@@ -68,7 +67,7 @@ const CardContent: FC<ContentProps> = ({ride}) => {
                 case RideStatuses.CANCELLED:
                     break;
             }
-        }
+
         return <Fragment>
             {buttons.map((b, idx) => <CustomButton key={'b' + ride.id + idx} {...b} />)}
         </Fragment>
@@ -94,7 +93,8 @@ const CardContent: FC<ContentProps> = ({ride}) => {
             <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                marginTop: 5
+                marginTop: 5,
+                height:40,
             }}>
                 {setActionButtons()}
             </View>

@@ -32,9 +32,9 @@ const CustomInputField = <T, >({
     const [autocompleteResults, setAutocompleteResults] = useState<any[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [dropdownPosition, setDropdownPosition] = useState({top: 0, left: 0, width: 0});
-
+    const [rawData, setRawData] = useState(props.value);
     const onChangeText = async (text: string) => {
-        if (mask) text = mask(text);
+        console.log(props.value, rawData, text)
         if (handleChangeText) handleChangeText(name, text)
         if (onAutocomplete) {
             if (text.length >= 3) {
@@ -72,19 +72,23 @@ const CustomInputField = <T, >({
 
     return (
         <View style={styles.container}>
-            <View style={[styles.inputContainer, styles.shadowProps]} onLayout={handleLayout}>
+            <View style={[styles.inputContainer, styles.shadowProps, {height: props.multiline ? 65 : 55}]}
+                  onLayout={handleLayout}>
                 {prefixIcon}
-                <TextInput ref={customRef}
-                           style={styles.input}
-                           onChangeText={onChangeText}
-                           onFocus={() => {
-                               if (autocompleteResults.length) {
-                                   setShowDropdown(true);
-                               }
-                           }}
-                           onBlur={() => {
-                               setShowDropdown(false);
-                           }} {...props}/>
+                <TextInput
+                    {...props}
+                    ref={customRef}
+                    style={styles.input}
+                    value={mask ? mask(props.value!) : props.value}
+                    onChangeText={onChangeText}
+                    onFocus={() => {
+                        if (autocompleteResults.length) {
+                            setShowDropdown(true);
+                        }
+                    }}
+                    onBlur={() => {
+                        setShowDropdown(false);
+                    }}/>
                 {suffixIcon}
             </View>
             {errors && (

@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import {Modal, View} from "react-native";
+import {KeyboardAvoidingView, Modal, Platform} from "react-native";
 
 interface ModalData {
     id: string;
@@ -49,12 +49,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({children}) => 
                     animationType="none" // Optional animation type
                     onRequestClose={() => closeTopModal()} // Handle back button on Android
                 >
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: 'rgba(0,0,0,0.5)'
-                    }}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
                         {modal.content}
-                    </View>
+                    </KeyboardAvoidingView>
                 </Modal>
             ))}
         </ModalContext.Provider>

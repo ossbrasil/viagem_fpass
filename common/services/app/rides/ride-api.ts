@@ -12,7 +12,7 @@ export interface IRideAPI {
     getPlate: (plate: string) => Promise<string[]>
 }
 
-export class RideAPI{
+export class RideAPI implements IRideAPI{
     constructor(private readonly httpService: HttpService) {}
 
     async getManyRides(searchQuery: FetchManyRides = {}): Promise<Ride[]> {

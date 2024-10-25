@@ -218,13 +218,13 @@ const AddAddressModal = ({showAddress, setShowAddress, addressIdx}: AddAddressPr
                             />
                         </View>
                     </View>
-                    <View style={{flexDirection: 'row', paddingBottom: 6}}>
-                        <CustomButton title={'Cancelar'} type={ButtonType.DANGER} size={'md'}
+                    <View style={{height:60,flexDirection: 'row', paddingBottom: 6}}>
+                        <CustomButton title={'Cancelar'} type={ButtonType.DANGER} size="lg"
                                       onPress={() => {
                                           if (addressIdx != undefined)
                                               setShowAddress(false);
                                       }}/>
-                        <CustomButton title={'Confirmar'} type={ButtonType.SUCCESS} size={'md'} onPress={handleSubmit}/>
+                        <CustomButton title={'Confirmar'} type={ButtonType.SUCCESS} size="lg" onPress={handleSubmit}/>
                     </View>
                 </View>
             </CustomModal>
