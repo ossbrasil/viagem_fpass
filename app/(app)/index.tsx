@@ -4,7 +4,7 @@ import RideCard from "@/components/ride/card/ride-card";
 import {Ride} from "@/core/interfaces/ride";
 import {useModal} from "@/core/context/modal-context";
 import CustomButton, {ButtonType} from "@/components/custom-button";
-import CashModal from "@/components/modal/cash-mdal";
+import CashModal from "@/components/modal/cash-modal";
 import {useShift} from "@/core/context/shift-context";
 import ShiftModal from "@/components/modal/shift-modal";
 
@@ -29,7 +29,7 @@ const Index = () => {
                                 {/*</ScrollView>*/}
                             </View>
                             <CustomButton
-                                title={'Usar Caixa'}
+                                title={'Usar valor caixa'}
                                 type={ButtonType.MAIN}
                                 size="lg" onPress={() => {openModal('cash', <CashModal/>)}}/>
                         </Fragment>

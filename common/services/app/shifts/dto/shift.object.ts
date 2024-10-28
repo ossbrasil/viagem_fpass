@@ -1,3 +1,5 @@
+import {Ride} from "@/core/interfaces/ride";
+
 export interface Shift {
     id: number;
     openingCash: number;
@@ -6,4 +8,5 @@ export interface Shift {
     endTime: number|null;
     employeeId: number;
     supervisorId: number|null;
+    ride: Ride;
 }
