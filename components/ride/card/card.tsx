@@ -17,7 +17,7 @@ export interface ContentProps {
     current?: boolean;
 }
 
-const CardContent: FC<ContentProps> = ({ride}) => {
+const CardContent: FC<ContentProps> = ({ride, current}) => {
     const {session} = useApp();
     const {updateRides} = useRide();
     const {navigate} = useNavigation<NavigationProp>();
@@ -32,36 +32,54 @@ const CardContent: FC<ContentProps> = ({ride}) => {
                         },
                         {
                             title: "Iniciar Viagem", type: ButtonType.SUCCESS, size: "md",
-                            onPress: () => {
-                                // updateRides(ride.id, {
-                                //     status: RideStatuses.DRIVER_EN_ROUTE,
-                                //     startTime: new Date().getTime()
-                                // })
-                                navigate('current-ride')
+                            onPress: async () => {
+                                await updateRides(ride.id, {
+                                    status: RideStatuses.DRIVER_EN_ROUTE,
+                                    startTime: new Date().getTime()
+                                })
+                                navigate('current-ride', {id: ride.id})
                             }
                         },
                     );
                     break;
                 case RideStatuses.DRIVER_EN_ROUTE:
-                    buttons.push({
-                        title: "Cheguei ao Local de retirada", type: ButtonType.SUCCESS, size: "md",
-                        onPress: () => updateRides(ride.id, {status: RideStatuses.DRIVER_ARRIVED})
-                    });
+                    if (!current)
+                        buttons.push({
+                            title: "Acompanhar Viagem", type: ButtonType.INFO, size: "md",
+                            onPress: () => {navigate('current-ride', {id: ride.id})}
+                        });
+                    else
+                        buttons.push({
+                            title: "Cheguei ao Local de retirada", type: ButtonType.SUCCESS, size: "md",
+                            onPress: () => updateRides(ride.id, {status: RideStatuses.DRIVER_ARRIVED})
+                        });
                     break;
                 case RideStatuses.DRIVER_ARRIVED:
-                    buttons.push({
-                        title: "Veículo Retirado", type: ButtonType.SUCCESS, size: "md",
-                        onPress: () => updateRides(ride.id, {status: RideStatuses.IN_PROGRESS})
-                    });
+                    if (!current)
+                        buttons.push({
+                            title: "Acompanhar Viagem", type: ButtonType.INFO, size: "md",
+                            onPress: () => {navigate('current-ride', {id: ride.id})}
+                        });
+                    else
+                        buttons.push({
+                            title: "Veículo Retirado", type: ButtonType.SUCCESS, size: "md",
+                            onPress: () => updateRides(ride.id, {status: RideStatuses.IN_PROGRESS})
+                        });
                     break;
                 case RideStatuses.IN_PROGRESS:
-                    buttons.push({
-                        title: "Completar Viagem", type: ButtonType.SUCCESS, size: "md",
-                        onPress: () => updateRides(ride.id, {
-                            status: RideStatuses.COMPLETED,
-                            endTime: new Date().getTime()
-                        })
-                    });
+                    if (!current)
+                        buttons.push({
+                            title: "Acompanhar Viagem", type: ButtonType.INFO, size: "md",
+                            onPress: () => {navigate('current-ride', {id: ride.id})}
+                        });
+                    else
+                        buttons.push({
+                            title: "Completar Viagem", type: ButtonType.SUCCESS, size: "md",
+                            onPress: () => updateRides(ride.id, {
+                                status: RideStatuses.COMPLETED,
+                                endTime: new Date().getTime()
+                            })
+                        });
                     break;
                 case RideStatuses.COMPLETED:
                 case RideStatuses.CANCELLED:

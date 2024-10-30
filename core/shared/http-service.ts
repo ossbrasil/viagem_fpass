@@ -35,9 +35,9 @@ export class HttpService extends AbstractHttpService {
             }
 
             // Make FetchAPI request with 10s timeout to abort
-            const abort = setTimeout(() => this.controller.abort(), 10000);
+            //const abort = setTimeout(() => this.controller.abort(), 10000);
             const response = await fetch(url, {...options, headers});
-            clearTimeout(abort)
+            //clearTimeout(abort)
             if (!response.ok) {
                 switch (response.status) {
                     // handle Unauthenticated status

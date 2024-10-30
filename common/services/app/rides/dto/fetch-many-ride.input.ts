@@ -3,9 +3,8 @@ import {RideStatuses} from "@/core/enums/ride-status";
 export interface FetchManyRides {
     startTime?: number;
     endTime?: number;
-    driverId?: number;
-    towPlate?: string;
-    carPlate?: string;
+    employeeId?: number;
+    shiftId?: number;
     category?: string;
     status?: RideStatuses[];
     fields?: ValidFetchManyRidesField[];

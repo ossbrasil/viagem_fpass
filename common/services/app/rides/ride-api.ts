@@ -8,7 +8,7 @@ export interface IRideAPI {
     getRoute: (departureTime: number, addresses: HereRoute[]) => Promise<ResponseRouteObject | null>
     geoDecode: (address: Address) => Promise<Address | null>
     updateRide: (id: number, ride: Partial<Ride>) => Promise<boolean>
-    createRide: (ride: CreateRideDto) => Promise<Response | void>
+    createRide: (ride: CreateRideDto) => Promise<Response>
     getPlate: (plate: string) => Promise<string[]>
 }
 
@@ -69,11 +69,10 @@ export class RideAPI implements IRideAPI{
             },
             subPaths: ['rides']
         });
-        if (!response || (response && !response.ok)) {
+        if (response && !response.ok) {
             console.log(await response!.json())
-            return [];
         }
-        return await response.json();
+        return response;
     }
 
     async getPlate(plate: string): Promise<string[]> {

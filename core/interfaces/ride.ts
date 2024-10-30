@@ -10,7 +10,7 @@ export interface CreateRideDto {
     addresses: Address[];
     polyline: string[];
     distance: number;
-    ownerId: number;
+    shiftId: number;
 }
 
 export interface Ride extends CreateRideDto {

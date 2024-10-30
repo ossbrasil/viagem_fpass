@@ -7,15 +7,15 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Dropdown from "@/components/dropdown";
 import MenuItem from "@/components/menu-item";
 import Icon from "@/components/icon";
-import {RideProvider} from "@/components/ride/ride-ctx";
 import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 import {SocketIoProvider} from "@/core/context/socketio-context";
 import {ShiftProvider} from "@/core/context/shift-context";
+import {RideProvider} from "@/components/ride/ride-ctx";
 
 export type RootStackParamList = {
     'new-ride': { id?: number };
     'index': undefined;
-    'current-ride': undefined;
+    'current-ride': { id: number };
     'hist-ride': undefined;
 };
 export type NavigationProp = BottomTabNavigationProp<RootStackParamList>;
@@ -76,45 +76,47 @@ export const AppLayout = () => {
             )}
             <SocketIoProvider>
                 <ShiftProvider>
-                    <Tabs
-                        screenOptions={{
-                            headerShown: false,
-                            tabBarActiveTintColor: '#000',
-                            tabBarHideOnKeyboard: true
-                        }}>
-                        <Tabs.Screen
-                            name="index"
-                            options={{
-                                tabBarShowLabel: false,
-                                tabBarIcon: ({color}) => setTabIcon(color, 'calendar-today')
-                            }}
+                    <RideProvider>
+                        <Tabs
+                            screenOptions={{
+                                headerShown: false,
+                                tabBarActiveTintColor: '#000',
+                                tabBarHideOnKeyboard: true
+                            }}>
+                            <Tabs.Screen
+                                name="index"
+                                options={{
+                                    tabBarShowLabel: false,
+                                    tabBarIcon: ({color}) => setTabIcon(color, 'calendar-today')
+                                }}
 
-                        />
-                        <Tabs.Screen
-                            name="new-ride"
-                            initialParams={{id: null}}
-                            options={{
-                                tabBarShowLabel: false,
-                                tabBarIcon: ({color}) => setTabIcon(color, 'add')
-                            }}
-                        />
-                        <Tabs.Screen
-                            name="current-ride"
-                            options={{
-                                href: null,
-                                tabBarShowLabel: false,
-                                tabBarIcon: ({color}) => setTabIcon(color, 'navigation')
-                            }}
-                        />
-                        <Tabs.Screen
-                            name="hist-ride"
-                            options={{
-                                tabBarShowLabel: false,
-                                tabBarIcon: ({color}) => setTabIcon(color, 'history')
+                            />
+                            <Tabs.Screen
+                                name="new-ride"
+                                initialParams={{id: null}}
+                                options={{
+                                    tabBarShowLabel: false,
+                                    tabBarIcon: ({color}) => setTabIcon(color, 'add')
+                                }}
+                            />
+                            <Tabs.Screen
+                                name="current-ride"
+                                options={{
+                                    href: null,
+                                    tabBarShowLabel: false,
+                                    tabBarIcon: ({color}) => setTabIcon(color, 'navigation')
+                                }}
+                            />
+                            <Tabs.Screen
+                                name="hist-ride"
+                                options={{
+                                    tabBarShowLabel: false,
+                                    tabBarIcon: ({color}) => setTabIcon(color, 'history')
 
-                            }}
-                        />
-                    </Tabs>
+                                }}
+                            />
+                        </Tabs>
+                    </RideProvider>
                 </ShiftProvider>
             </SocketIoProvider>
         </KeyboardAvoidingView>

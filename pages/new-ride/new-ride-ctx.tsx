@@ -6,6 +6,8 @@ import {NavigationProp} from "@/app/(app)/_layout";
 import {RideAPI} from "@/common/services/app/rides/ride-api";
 import {useApp} from "@/core/context/app-context";
 import {HttpService} from "@/core/shared/http-service";
+import {useShift} from "@/core/context/shift-context";
+
 export interface NewRideCtxValues {
     form: UseFormHook<CreateRideDto | Ride>;
     rideAPI: RideAPI,
@@ -19,17 +21,18 @@ const newRideCtx = createContext<NewRideCtxValues>(defaultValues);
 export const useNewRide = () => useContext(newRideCtx);
 const initialValues: CreateRideDto = {
     expectedDepartureTime: new Date().getTime(),
-    category: 'Retirada',
+    category: 'Remoção',
     addresses: [],
     employeeId: 0,
     expectedFinishTime: 0,
     polyline: [],
     distance: 0,
-    ownerId: 0,
+    shiftId: 0,
 };
 
 export const NewRideProvider: FC<PropsWithChildren> = ({children}) => {
-    const {session, httpService} = useApp();
+    const {httpService} = useApp();
+    const {shift} = useShift()
     const rideAPI = new RideAPI(httpService);
     const navigation = useNavigation<NavigationProp>();
     const validate = (values: CreateRideDto) => {
@@ -47,14 +50,16 @@ export const NewRideProvider: FC<PropsWithChildren> = ({children}) => {
     }
     const onSubmit = async (values: CreateRideDto) => {
         delete values.employee;
-        const res = await rideAPI.createRide(values);
-        if (res)
+        const res = await rideAPI.createRide({...values, shiftId: shift!.id});
+        if (res.ok) {
             navigation.navigate('index');
+            form.setValues(initialValues)
+        }
     }
     const form = useForm<CreateRideDto | Ride>({
         validate,
         onSubmit,
-        initialValues: {...initialValues, ownerId: session.user.id},
+        initialValues,
     });
 
 

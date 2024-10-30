@@ -32,9 +32,7 @@ const CustomInputField = <T, >({
     const [autocompleteResults, setAutocompleteResults] = useState<any[]>([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [dropdownPosition, setDropdownPosition] = useState({top: 0, left: 0, width: 0});
-    const [rawData, setRawData] = useState(props.value);
     const onChangeText = async (text: string) => {
-        console.log(props.value, rawData, text)
         if (handleChangeText) handleChangeText(name, text)
         if (onAutocomplete) {
             if (text.length >= 3) {

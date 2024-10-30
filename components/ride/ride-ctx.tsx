@@ -8,6 +8,7 @@ import {useApp} from "@/core/context/app-context";
 import {HttpService} from "@/core/shared/http-service";
 import {useNavigation} from "expo-router";
 import {NavigationProp} from "@/app/(app)/_layout";
+import {useShift} from "@/core/context/shift-context";
 
 
 export interface RideContextValues {
@@ -31,8 +32,9 @@ const RideContext = React.createContext<RideContextValues>(defaultValue);
 export const useRide = () => React.useContext(RideContext);
 
 export const RideProvider: React.FC<React.PropsWithChildren> = ({children}) => {
-    const {server} = useSocket();
+    //const {server} = useSocket();
     const {session, httpService} = useApp();
+    const {shift} = useShift();
     const {navigate} = useNavigation<NavigationProp>();
     const [scheduledRides, setScheduledRides] = useState<Ride[]>([]);
     const [historyRides, setHistoryRides] = useState<Ride[]>([]);
@@ -50,7 +52,7 @@ export const RideProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                     shallowRideCopy = [...scheduledRides];
                     shallowRideCopy.forEach((f) => {
                         if (f.id !== id) return;
-                        f.status = RideStatuses.SCHEDULED;
+                        f.status = RideStatuses.DRIVER_EN_ROUTE;
                     });
                     console.log(shallowRideCopy);
                     setScheduledRides(shallowRideCopy);
@@ -64,7 +66,6 @@ export const RideProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                         break;
                     selectedRide.status = updatedRide.status;
                     setScheduledRides([...shallowRideCopy]);
-                    //navigation.navigate('current-ride');
                     break;
                 case RideStatuses.COMPLETED:
                 case RideStatuses.CANCELLED:
@@ -113,22 +114,22 @@ export const RideProvider: React.FC<React.PropsWithChildren> = ({children}) => {
         }
     }
     useEffect(() => {
-        rideAPI.getManyRides({relations: true})
-            .then((rides) => {
-                const [sRides, hRides] = rides.reduce(([sRides, hRides]: [Ride[], Ride[]], ride) => {
-                        if ([RideStatuses.COMPLETED, RideStatuses.CANCELLED].includes(ride.status!)) hRides.push(ride)
-                        else sRides.push(ride);
-                        if (session?.user.accessLevel === AccessLevel.DRIVER
-                            && [RideStatuses.IN_PROGRESS, RideStatuses.DRIVER_EN_ROUTE, RideStatuses.DRIVER_EN_ROUTE].includes(ride.status!))
-                            navigate('current-ride')
-                        return [sRides, hRides]
-                    }, [[], []],
-                );
-                setScheduledRides(sRides);
-                setHistoryRides(hRides);
-            });
-        server.on('rideUpdate', handleRideUpdateEvent)
-    }, []);
+        if(shift){
+            console.log('SHIFT GETTED', shift.id)
+            console.log(shift.rides)
+            const [sRides, hRides] = shift.rides.reduce(([sRides, hRides]: [Ride[], Ride[]], ride) => {
+                    if ([RideStatuses.COMPLETED, RideStatuses.CANCELLED].includes(ride.status!)) hRides.push(ride)
+                    else sRides.push(ride);
+                    if (session?.user.accessLevel === AccessLevel.DRIVER
+                        && [RideStatuses.IN_PROGRESS, RideStatuses.DRIVER_EN_ROUTE, RideStatuses.DRIVER_EN_ROUTE].includes(ride.status!))
+                        navigate('current-ride', {id: ride.id})
+                    return [sRides, hRides]
+                }, [[], []],
+            );
+            setScheduledRides(sRides);
+            setHistoryRides(hRides);
+        }
+    }, [shift]);
     const value = useMemo(() => {
         return {
             historyRides,

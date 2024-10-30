@@ -29,11 +29,11 @@ const ShiftContext = createContext<ShiftContextValues>(defaultValue);
 export const useShift = () => useContext(ShiftContext);
 
 export const ShiftProvider: FC<PropsWithChildren> = ({children}) => {
-    const {session, httpService} = useApp();
+    const {httpService} = useApp();
     const shiftAPI = new ShiftApi(httpService);
     const [shift, setShift] = useState<Shift | null>(null);
     useEffect(() => {
-        shiftAPI.getActiveShift({limit: 1})
+        shiftAPI.getActiveShift({limit: 1, relations: true})
             .then((shift) => {
                 console.log(shift);
                 if (shift && !shift.endTime) {

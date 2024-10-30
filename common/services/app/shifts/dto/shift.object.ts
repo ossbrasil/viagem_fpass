@@ -8,5 +8,5 @@ export interface Shift {
     endTime: number|null;
     employeeId: number;
     supervisorId: number|null;
-    ride: Ride;
+    rides: Ride[];
 }

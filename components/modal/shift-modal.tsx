@@ -3,22 +3,35 @@ import {StyleSheet, Text, View} from "react-native";
 import {globalStyles} from "@/core/styles";
 import CustomInputField from "@/components/custom-input-field";
 import CustomButton, {ButtonType} from "@/components/custom-button";
-import {useModal} from "@/core/context/modal-context";
 import {CreateShift} from "@/common/services/app/shifts/dto/create-shift.input";
 import useForm, {FormErrors} from "@/hooks/useForm";
 import {useShift} from "@/core/context/shift-context";
-import {parseCurrency} from "@/common/parsers/parse-currency";
+import CustomModal from "@/components/modal/modal";
 
 
-const ShiftModal = () => {
-    const {closeModal} = useModal();
-    const {shiftAPI, setShift} = useShift();
+export interface ShiftModalProps {
+    showShift: boolean;
+    setShowShift: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ShiftModal = ({showShift, setShowShift}: ShiftModalProps) => {
+
+    const {shift, shiftAPI, setShift} = useShift();
     const initialValues: CreateShift = {
         openingCash: 0
     }
     const onSubmit = async (value: CreateShift) => {
-        const res = await shiftAPI.createShift(value);
-        setShift(res)
+        if(shift){
+            const closingValue = {closingCash: value.openingCash}
+            const res = await shiftAPI.updateShift(shift!.id, closingValue);
+            console.log(res);
+            setShift(null);
+        }else{
+            const res = await shiftAPI.createShift(value);
+            console.log(res);
+            setShift({...res, rides: []})
+        }
+        setShowShift(false);
     }
     const validate = (value: CreateShift) => {
         let errors: FormErrors<CreateShift> = {};
@@ -29,33 +42,35 @@ const ShiftModal = () => {
     }
     const form = useForm<CreateShift>({initialValues, onSubmit, validate})
     return (
-        <View style={[globalStyles.shadowProps, styles.container]}>
-            <Text style={styles.title}>Iniciar Turno</Text>
-            <Text style={styles.subTitle}>Para dar inicio ao turno informe o valor atual em caixa</Text>
-            <CustomInputField
-                name={'openingCash'}
-                value={form.values.openingCash.toString()}
-                errors={form.errors.openingCash}
-                handleChangeText={form.handleChange}
-                placeholder="Valor em caixa"
-                keyboardType="numeric"
-                mask={(text)=>(`xx${text}`)}
-            />
-            <View style={{flexDirection: 'row', height: 40}}>
-                <CustomButton
-                    title={'Cancelar'}
-                    type={ButtonType.DANGER}
-                    size="md"
-                    onPress={() => {closeModal('shift')}}
+        <CustomModal isOpen={showShift} setIsOpen={setShowShift}>
+            <View style={[globalStyles.shadowProps, styles.container]}>
+                <Text style={styles.title}>{shift ? 'Encerrar' : 'Iniciar'} Turno</Text>
+                <Text style={styles.subTitle}>Informe o valor atual em caixa</Text>
+                <CustomInputField
+                    name={'openingCash'}
+                    value={form.values.openingCash ? form.values.openingCash.toString() : ''}
+                    errors={form.errors.openingCash}
+                    handleChangeText={form.handleChange}
+                    placeholder="Valor em caixa"
+                    keyboardType="numeric"
                 />
-                <CustomButton
-                    title={'Confirmar'}
-                    type={ButtonType.SUCCESS}
-                    size="md"
-                    onPress={form.handleSubmit}
-                />
+                <View style={{flexDirection: 'row', height: 40}}>
+                    <CustomButton
+                        title={'Cancelar'}
+                        type={ButtonType.DANGER}
+                        size="md"
+                        onPress={() => {setShowShift(false)}}
+                    />
+                    <CustomButton
+                        title={'Confirmar'}
+                        type={ButtonType.SUCCESS}
+                        size="md"
+                        onPress={form.handleSubmit}
+                    />
+                </View>
             </View>
-        </View>
+        </CustomModal>
+
     );
 };
 const styles = StyleSheet.create({
