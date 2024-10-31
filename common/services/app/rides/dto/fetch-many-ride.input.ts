@@ -9,6 +9,7 @@ export interface FetchManyRides {
     status?: RideStatuses[];
     fields?: ValidFetchManyRidesField[];
     relations?: boolean;
+    limit?:number;
 }
 
 export type ValidFetchManyRidesField =

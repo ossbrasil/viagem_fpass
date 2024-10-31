@@ -77,7 +77,7 @@ const CashModal = ({showCash, setShowCash}:CashModalProps) => {
                 <CustomInputField
                     name={'value'}
                     placeholder={'Valor usado'}
-                    value={form.values.value?form.values.value.toString():''}
+                    value={form.values.value?form.values.value.toString().replace(/,/g, "."):''}
                     errors={form.errors.value}
                     handleChangeText={form.handleChange}
                     keyboardType="numeric"

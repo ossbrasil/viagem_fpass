@@ -14,9 +14,9 @@ const CurrentRide = () => {
             <ScrollView style={{width: '100%'}} showsVerticalScrollIndicator={false}>
                 <View style={{alignItems: 'center',}}>
                     <Text style={styles.ridesTitle}>Viagem Atual</Text>
-                    {
+                    {scheduledRides.find((ride) => ride.id === +id) && (
                         <CardContent ride={scheduledRides.find((ride) => ride.id === +id)!} current/>
-                    }
+                    )}
                 </View>
             </ScrollView>
         </View>

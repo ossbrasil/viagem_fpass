@@ -13,7 +13,8 @@ const HistRide = () => {
         setRefreshing(true);
         rideAPI.getManyRides({
             relations: true,
-            status: [RideStatuses.COMPLETED, RideStatuses.CANCELLED]
+            status: [RideStatuses.COMPLETED, RideStatuses.CANCELLED],
+            limit: 100,
         }).then((rides) => {
             setHistoryRides(rides);
             setRefreshing(false);

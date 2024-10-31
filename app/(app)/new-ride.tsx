@@ -6,10 +6,7 @@ import Addresses from "@/pages/new-ride/components/addresses";
 import RideScrollView from "@/pages/new-ride/components/ride-scrollview";
 import {NewRideProvider} from "@/pages/new-ride/new-ride-ctx";
 
-export interface NewRideProps {
-    route: RouteProp<RootStackParamList, 'new-ride'>
-}
-const NewRide: FC<NewRideProps> = ({route}) => {
+const NewRide = () => {
     return (
         <NewRideProvider>
             <View style={styles.container}>

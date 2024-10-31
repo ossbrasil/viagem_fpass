@@ -1,1 +1,1 @@
-export const BASE_URL = "http://192.168.15.14:3000";
+export const BASE_URL = "https://fpass-451643989383.us-central1.run.app";

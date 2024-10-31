@@ -13,7 +13,6 @@ import ScrollView = Animated.ScrollView;
 const Index = () => {
     const {shift} = useShift();
     const {scheduledRides, setScheduledRides, rideAPI} = useRide();
-
     const createRideCards = (ride: Ride) => <RideCard key={'schedule' + ride.id} ride={ride}/>;
     const [showShiftModal, setShowShiftModal] = useState(false);
     const [showCashModal, setShowCashModal] = useState(false);
@@ -28,12 +27,13 @@ const Index = () => {
                 RideStatuses.IN_PROGRESS,
                 RideStatuses.DRIVER_EN_ROUTE,
                 RideStatuses.DRIVER_ARRIVED,
-            ]
+            ],
+            limit: 100,
         }).then((rides) => {
             setScheduledRides(rides);
             setRefreshing(false);
         });
-    }, []);
+    }, [shift]);
     return (
         <View style={{flex: 1, paddingHorizontal: 8, paddingVertical: 6, justifyContent: 'center'}}>
             {

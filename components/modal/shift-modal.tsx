@@ -21,12 +21,12 @@ const ShiftModal = ({showShift, setShowShift}: ShiftModalProps) => {
         openingCash: 0
     }
     const onSubmit = async (value: CreateShift) => {
-        if(shift){
+        if (shift) {
             const closingValue = {closingCash: value.openingCash}
             const res = await shiftAPI.updateShift(shift!.id, closingValue);
             console.log(res);
             setShift(null);
-        }else{
+        } else {
             const res = await shiftAPI.createShift(value);
             console.log(res);
             setShift({...res, rides: []})
@@ -48,7 +48,7 @@ const ShiftModal = ({showShift, setShowShift}: ShiftModalProps) => {
                 <Text style={styles.subTitle}>Informe o valor atual em caixa</Text>
                 <CustomInputField
                     name={'openingCash'}
-                    value={form.values.openingCash ? form.values.openingCash.toString() : ''}
+                    value={form.values.openingCash ? form.values.openingCash.toString().replace(/,/g, ".") : ''}
                     errors={form.errors.openingCash}
                     handleChangeText={form.handleChange}
                     placeholder="Valor em caixa"
